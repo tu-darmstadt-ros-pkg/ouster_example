@@ -31,9 +31,14 @@ int main(int argc, char** argv) {
 
     auto tf_prefix = nh.param("tf_prefix", std::string{});
     if (!tf_prefix.empty() && tf_prefix.back() != '/') tf_prefix.append("/");
-    auto sensor_frame = tf_prefix + "os_sensor";
-    auto imu_frame = tf_prefix + "os_imu";
-    auto lidar_frame = tf_prefix + "os_lidar";
+    
+    std::string sensor_frame_name = nh.param<std::string>("sensor_frame_name", "os_sensor");
+    std::string imu_frame_name = nh.param<std::string>("imu_frame_name", "os_imu");
+    std::string lidar_frame_name = nh.param<std::string>("lidar_frame_name", "os_lidar");
+
+    auto sensor_frame = tf_prefix + sensor_frame_name;
+    auto imu_frame = tf_prefix + imu_frame_name;
+    auto lidar_frame = tf_prefix + lidar_frame_name;
 
     ouster_ros::OSConfigSrv cfg{};
     auto client = nh.serviceClient<ouster_ros::OSConfigSrv>("os_config");
